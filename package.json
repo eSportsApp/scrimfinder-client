@@ -9,9 +9,9 @@
     "typescript": "^5.0.0"
   },
   "scripts": {
-    "start": "bun run src/index.ts",
-    "build": "bun build src/index.ts --outdir dist --target node",
-    "dev": "bun run --watch test/test.ts",
+    "start": "bun run src/client.ts",
+    "build": "bun build src/client.ts --outdir dist --target node",
+    "dev": "bun run --watch tests/test.ts",
     "test": "bun run --watch client.ts"
   },
   "dependencies": {
