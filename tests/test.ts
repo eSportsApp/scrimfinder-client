@@ -1,7 +1,7 @@
 // test.ts
 import ScrimFinder from '../src/client';
 
-const apiKey = 'af18fa24-cb09-46b6-8a90-ebdd2a8104b1'; 
+const apiKey = 'your-api-key-here'; 
 const scrimFinder = new ScrimFinder(apiKey);
 
 const searchMessage = {
@@ -29,3 +29,4 @@ setTimeout(() => {
     //* Programm code
     scrimFinder.openSearch(searchMessage);
 }, 2000); // 2 Sekunden warten
+
