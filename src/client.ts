@@ -12,6 +12,12 @@ interface SearchMessage {
     time: string;
 }
 
+interface CloseRequest {
+    type: string,
+    userid: string,
+    SearchId: string
+}
+
 class ScrimFinder {
     private ws: WebSocket;
 
@@ -42,6 +48,19 @@ class ScrimFinder {
         } else {
             console.error('WebSocket is not open. Unable to send message.');
         }
+    }
+
+    closeSearch(closeRequest: CloseRequest) {
+        if (this.ws.readyState === WebSocket.OPEN) {
+            this.ws.send(JSON.stringify(closeRequest));
+            console.log('Sent close request:', closeRequest);
+        } else {
+            console.error('WebSocket is not open. Unable to send message.');
+        }
+    }
+
+    close() {
+        this.ws.close();
     }
 }
 
