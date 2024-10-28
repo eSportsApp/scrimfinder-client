@@ -24,7 +24,7 @@ class ScrimFinder {
     private ws: WebSocket;
 
     constructor(apiKey: string) {
-        this.ws = new WebSocket(`ws://localhost:3333/network?apikey=${apiKey}`);
+        this.ws = new WebSocket(`ws://api.esportsapp.gg/network?apikey=${apiKey}`);
 
         this.ws.on('open', () => {
             console.log('WebSocket connection established.');

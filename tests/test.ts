@@ -1,7 +1,7 @@
 // test.ts
 import ScrimFinder from '../src/client';
 
-const apiKey = 'your-api-key-here'; 
+const apiKey = 'public-330ae0f92cc86d40368114a1405c7b967f76b303'; 
 const scrimFinder = new ScrimFinder(apiKey);
 
 const searchMessage = {
