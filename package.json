@@ -1,5 +1,10 @@
 {
-  "name": "client",
+  "name": "@esprotsapp/client",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
   "module": "src/client.ts",
   "type": "module",
   "devDependencies": {
