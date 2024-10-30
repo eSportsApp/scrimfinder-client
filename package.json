@@ -1,11 +1,12 @@
 {
   "name": "@esportsapp/client",
-  "version": "1.0.3",
-  "main": "index.js",
+  "version": "1.0.5",
+  "main": "dist/client.js",
+  "module": "dist/client.js",
+  "types": "dist/client.d.ts",
   "files": [
     "dist"
   ],
-  "module": "src/client.ts",
   "type": "module",
   "devDependencies": {
     "@types/bun": "latest"
@@ -15,7 +16,7 @@
   },
   "scripts": {
     "start": "bun run src/client.ts",
-    "build": "bun build src/client.ts --target node",
+    "build": "bun build src/client.ts --outdir dist --target node",
     "dev": "bun run --watch tests/test.ts",
     "test": "bun run --watch client.ts"
   },

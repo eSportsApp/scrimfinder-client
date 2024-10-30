@@ -2858,35 +2858,46 @@ var wrapper_default = websocket.default;
 // src/client.ts
 class ScrimFinder {
   ws;
+  retries = 0;
+  MAX_RETRIES = 10;
+  RETRY_INTERVAL = 3000;
   constructor(apiKey) {
-    this.ws = new wrapper_default(`ws://api.esportsapp.gg/network?apikey=${apiKey}`);
+    this.connect(apiKey);
+  }
+  connect(apiKey) {
+    this.ws = new wrapper_default(`ws://api.esportsapp.gg/ws/network?apikey=${apiKey}`);
     this.ws.on("open", () => {
-      console.log("WebSocket connection established.");
+      console.log("Client successfully connected to the Scrimfinder Network \uD83D\uDE42");
+      this.retries = 0;
     });
     this.ws.on("message", (message) => {
-      console.log("Received message:", JSON.parse(message));
     });
     this.ws.on("error", (error) => {
-      console.error("WebSocket error:", error);
+      console.error("Network error:", error);
     });
     this.ws.on("close", () => {
-      console.log("WebSocket connection closed.");
+      console.log("\u274C Connection got closed. Reconnecting...");
+      if (this.retries < this.MAX_RETRIES) {
+        this.retries++;
+        console.log(`Reconnecting connection try (${this.retries}/${this.MAX_RETRIES})...`);
+        setTimeout(() => this.connect(apiKey), this.RETRY_INTERVAL);
+      } else {
+        console.error("You got rate limited. Please check your ApiKey and try again Manually");
+      }
     });
   }
   openSearch(search) {
     if (this.ws.readyState === wrapper_default.OPEN) {
       this.ws.send(JSON.stringify(search));
-      console.log("Sent search message:", search);
     } else {
-      console.error("WebSocket is not open. Unable to send message.");
+      console.error("You are not connected to the Scrimfinder Network. Unable to send message.");
     }
   }
   closeSearch(closeRequest) {
     if (this.ws.readyState === wrapper_default.OPEN) {
       this.ws.send(JSON.stringify(closeRequest));
-      console.log("Sent close request:", closeRequest);
     } else {
-      console.error("WebSocket is not open. Unable to send message.");
+      console.error("You are not connected to the Scrimfinder Network. Unable to send message.");
     }
   }
   close() {

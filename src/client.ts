@@ -32,7 +32,7 @@ class ScrimFinder {
     }
 
     private connect(apiKey: string) {
-        this.ws = new WebSocket(`ws://network.esportsapp.gg/network?apikey=${apiKey}`);
+        this.ws = new WebSocket(`ws://api.esportsapp.gg/ws/network?apikey=${apiKey}`);
 
         this.ws.on('open', () => {
             console.log('Client successfully connected to the Scrimfinder Network 🙂');
