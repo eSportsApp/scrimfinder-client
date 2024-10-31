@@ -1,5 +1,4 @@
 import WebSocket from 'ws';
-
 interface SearchMessage {
     type: string;
     game: string;
@@ -12,7 +11,6 @@ interface SearchMessage {
     date: string;
     time: string;
 }
-
 interface CloseRequest {
     type: string,
     guildId: string;
