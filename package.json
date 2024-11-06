@@ -1,9 +1,9 @@
 {
   "name": "@esportsapp/client",
-  "version": "1.0.6",
-  "main": "dist/client.js",
-  "module": "dist/client.js",
-  "types": "dist/client.d.ts",
+  "version": "1.0.11",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
@@ -15,10 +15,10 @@
     "typescript": "^5.0.0"
   },
   "scripts": {
-    "start": "bun run src/client.ts",
-    "build": "bun build src/client.ts --outdir dist --target node && cp src/client.d.ts dist/client.d.ts",
+    "start": "bun run src/index.ts",
+    "build": "bun build src/index.ts --outdir dist --target node && cp src/index.d.ts dist/index.d.ts",
     "dev": "bun run --watch tests/test.ts",
-    "test": "bun run --watch client.ts"
+    "test": "bun run --watch index.ts"
   },
   "dependencies": {
     "ws": "^8.18.0"

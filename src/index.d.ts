@@ -7,18 +7,24 @@ declare module '@esportsapp/client' {
         guildId: string;
         platform: string;
         region: string;
-        userid: string;
-        username: string;
+        user: {
+            id: string;
+            displayName: string;
+            avatar: string;
+        }
         best_of: number;
         date: string;
         time: string;
+        extrainfo?: string;
+        openSearch?: boolean;
+        searchid?: string;
     }
 
     interface CloseRequest {
-        type: string;
+        type: string,
         guildId: string;
-        userid: string;
-        SearchId: string;
+        userid: string,
+        SearchId: string
     }
 
     class ScrimFinder {

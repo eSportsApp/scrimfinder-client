@@ -5,11 +5,17 @@ interface SearchMessage {
     guildId: string;
     platform: string;
     region: string;
-    userid: string;
-    username: string;
+    user: {
+        id: string;
+        displayName: string;
+        avatar: string;
+    }
     best_of: number;
     date: string;
     time: string;
+    extrainfo?: string;
+    openSearch?: boolean;
+    searchid?: string;
 }
 interface CloseRequest {
     type: string,
@@ -23,13 +29,17 @@ class ScrimFinder {
     private retries = 0;
     private readonly MAX_RETRIES = 10;
     private readonly RETRY_INTERVAL = 3000;
+    private messageHandler?: (message: string) => void;
 
 
     constructor(apiKey: string) {
-        this.connect(apiKey);
+        
     }
 
-    private connect(apiKey: string) {
+    connect(apiKey: string, messageHandler: (message: string) => void) {
+        if (!this.messageHandler) {
+            this.messageHandler = messageHandler;
+        }
         this.ws = new WebSocket(`ws://api.esportsapp.gg/ws/network?apikey=${apiKey}`);
 
         this.ws.on('open', () => {
@@ -38,6 +48,12 @@ class ScrimFinder {
         });
 
         this.ws.on('message', (message: string) => {
+            let msg = JSON.parse(message);
+            if (this.messageHandler) {
+                this.messageHandler(msg);
+            } else {
+                console.error('No message handler set.');
+            }
         });
 
         this.ws.on('error', (error: Error) => {
@@ -48,8 +64,8 @@ class ScrimFinder {
             console.log('❌ Connection got closed. Reconnecting...');
             if (this.retries < this.MAX_RETRIES) {
                 this.retries++;
-                console.log(`Reconnecting connection try (${this.retries}/${this.MAX_RETRIES})...`);
-                setTimeout(() => this.connect(apiKey), this.RETRY_INTERVAL);
+                console.log(`⌛ Reconnecting connection try (${this.retries}/${this.MAX_RETRIES})...`);
+                setTimeout(() => this.connect(apiKey, messageHandler), this.RETRY_INTERVAL);
             } else {
                 console.error('You got rate limited. Please check your ApiKey and try again Manually');
             }
@@ -74,6 +90,10 @@ class ScrimFinder {
 
     close() {
         this.ws.close();
+    }
+
+    setMessageHandler(handler: (message: string) => void) {
+        this.messageHandler = handler;
     }
 
     
