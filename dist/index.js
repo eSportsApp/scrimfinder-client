@@ -201,7 +201,7 @@ var require_buffer_util = __commonJS((exports, module) => {
   };
   if (!process.env.WS_NO_BUFFER_UTIL) {
     try {
-      const bufferUtil = (()=>{throw new Error(`Cannot require module "bufferutil"`);})();
+      const bufferUtil = (()=>{throw new Error("Cannot require module "+"bufferutil");})();
       module.exports.mask = function(source, mask, output, offset, length) {
         if (length < 48)
           _mask(source, mask, output, offset, length);
@@ -690,7 +690,7 @@ var require_validation = __commonJS((exports, module) => {
     };
   } else if (!process.env.WS_NO_UTF_8_VALIDATE) {
     try {
-      const isValidUTF8 = (()=>{throw new Error(`Cannot require module "utf-8-validate"`);})();
+      const isValidUTF8 = (()=>{throw new Error("Cannot require module "+"utf-8-validate");})();
       module.exports.isValidUTF8 = function(buf) {
         return buf.length < 32 ? _isValidUTF8(buf) : isValidUTF8(buf);
       };
@@ -2150,7 +2150,7 @@ var require_websocket = __commonJS((exports, module) => {
     const isIpcUrl = parsedUrl.protocol === "ws+unix:";
     let invalidUrlMessage;
     if (parsedUrl.protocol !== "ws:" && !isSecure && !isIpcUrl) {
-      invalidUrlMessage = 'The URL\'s protocol must be one of "ws:", "wss:", ' + '"http:", "https", or "ws+unix:"';
+      invalidUrlMessage = `The URL's protocol must be one of "ws:", "wss:", ` + '"http:", "https", or "ws+unix:"';
     } else if (isIpcUrl && !parsedUrl.pathname) {
       invalidUrlMessage = "The URL's pathname is empty";
     } else if (parsedUrl.hash) {
@@ -2789,7 +2789,9 @@ var require_websocket_server = __commonJS((exports, module) => {
         ws._extensions = extensions;
       }
       this.emit("headers", headers, req);
-      socket.write(headers.concat("\r\n").join("\r\n"));
+      socket.write(headers.concat(`\r
+`).join(`\r
+`));
       socket.removeListener("error", socketOnError);
       ws.setSocket(socket, head, {
         allowSynchronousEvents: this.options.allowSynchronousEvents,
@@ -2834,7 +2836,11 @@ var require_websocket_server = __commonJS((exports, module) => {
       ...headers
     };
     socket.once("finish", socket.destroy);
-    socket.end(`HTTP/1.1 ${code} ${http.STATUS_CODES[code]}\r\n` + Object.keys(headers).map((h) => `${h}: ${headers[h]}`).join("\r\n") + "\r\n\r\n" + message);
+    socket.end(`HTTP/1.1 ${code} ${http.STATUS_CODES[code]}\r
+` + Object.keys(headers).map((h) => `${h}: ${headers[h]}`).join(`\r
+`) + `\r
+\r
+` + message);
   }
   function abortHandshakeOrEmitwsClientError(server, req, socket, code, message) {
     if (server.listenerCount("wsClientError")) {
@@ -2868,7 +2874,7 @@ class ScrimFinder {
     if (!this.messageHandler) {
       this.messageHandler = messageHandler;
     }
-    this.ws = new wrapper_default(`ws://api.esportsapp.gg/ws/network?apikey=${apiKey}`);
+    this.ws = new wrapper_default(`ws://socket.esportsapp.gg/ws/network?apikey=${apiKey}`);
     this.ws.on("open", () => {
       console.log("Client successfully connected to the Scrimfinder Network \uD83D\uDE42");
       this.retries = 0;
@@ -2885,10 +2891,10 @@ class ScrimFinder {
       console.error("Network error:", error);
     });
     this.ws.on("close", () => {
-      console.log("\u274C Connection got closed. Reconnecting...");
+      console.log("❌ Connection got closed. Reconnecting...");
       if (this.retries < this.MAX_RETRIES) {
         this.retries++;
-        console.log(`\u231B Reconnecting connection try (${this.retries}/${this.MAX_RETRIES})...`);
+        console.log(`⌛ Reconnecting connection try (${this.retries}/${this.MAX_RETRIES})...`);
         setTimeout(() => this.connect(apiKey, messageHandler), this.RETRY_INTERVAL);
       } else {
         console.error("You got rate limited. Please check your ApiKey and try again Manually");
